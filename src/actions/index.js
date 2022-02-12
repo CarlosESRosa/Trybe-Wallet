@@ -11,9 +11,3 @@ export const sendExpenses = (payload) => ({
   type: SEND_EXPENSES,
   payload,
 });
-
-export function fetchApi() {
-  return () => fetch('https://economia.awesomeapi.com.br/json/all')
-    .then((response) => response.json())
-    .then((data) => data);
-}
