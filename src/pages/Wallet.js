@@ -102,9 +102,10 @@ class Wallet extends React.Component {
               name="currency"
               data-testid="currency-input"
               onChange={ this.handleChange }
+              aria-label="moeda"
             >
               {moedas.map((element) => (
-                <option value={ element } key={ element }>
+                <option value={ element } key={ element } data-testid={ element }>
                   {element}
                   {' '}
                 </option>
