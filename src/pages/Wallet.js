@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { sendExpenses, fetchApi } from '../actions';
+import { sendExpenses } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -14,7 +14,19 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
       totalValue: 0,
+      moedas: [],
     };
+  }
+
+  componentDidMount() {
+    fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((dataApi) => {
+        this.setState({
+          moedas: Object.keys(dataApi).filter((element) => element !== 'USDT'),
+        });
+      })
+      .catch((error) => error);
   }
 
   handleChange = ({ target }) => {
@@ -28,36 +40,39 @@ class Wallet extends React.Component {
 
   totalExpenses = () => {
     const { expenses } = this.props;
-    expenses.forEach((element) => {
-      this.setState((prevState) => ({
-        totalValue: prevState.totalValue
-          + element.exchangeRates.USD.ask * element.value,
-      }));
-    });
+    const total = expenses.reduce((acc, element) => {
+      const { currency, exchangeRates, value } = element;
+      return acc + (exchangeRates[currency].ask * value);
+    }, 0);
+    this.setState({ totalValue: total });
   }
 
-  addExpenses = async () => {
+  addExpenses = () => {
     const { value, description, currency, method,
       tag } = this.state;
-    const { expensesAction, expenses, getDataApi } = this.props;
-    const dataApi = await getDataApi();
-    const expensesObj = {
-      id: expenses.length,
-      value,
-      description,
-      currency,
-      method,
-      tag,
-      exchangeRates: dataApi,
-    };
-    expensesAction(expensesObj);
-    this.setState({ value: 0 });
-    this.totalExpenses();
+    const { expensesAction, expenses } = this.props;
+    fetch('https://economia.awesomeapi.com.br/json/all')
+      .then((response) => response.json())
+      .then((dataApi) => {
+        const expensesObj = {
+          id: expenses.length,
+          value,
+          description,
+          currency,
+          method,
+          tag,
+          exchangeRates: dataApi,
+        };
+        expensesAction(expensesObj);
+        this.setState({ value: 0 });
+        this.totalExpenses();
+      })
+      .catch((error) => error);
   }
 
   render() {
     const { email } = this.props;
-    const { value, totalValue } = this.state;
+    const { value, totalValue, moedas } = this.state;
     return (
       <div>
         TrybeWallet
@@ -83,32 +98,37 @@ class Wallet extends React.Component {
               placeholder="descrição da despesa"
               onChange={ this.handleChange }
             />
-            <input
-              type="text"
+            <select
               name="currency"
               data-testid="currency-input"
-              placeholder="currency"
               onChange={ this.handleChange }
-            />
+            >
+              {moedas.map((element) => (
+                <option value={ element } key={ element }>
+                  {element}
+                  {' '}
+                </option>
+              ))}
+            </select>
             <select
               name="method"
               data-testid="method-input"
               onChange={ this.handleChange }
             >
-              <option value="dinheiro">Dinheiro</option>
-              <option value="cartao de credito">Cartão de crédito</option>
-              <option value="cartao de debito">Cartão de débito</option>
+              <option value="Dinheiro" defaultValue>Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
             <select
               name="tag"
               data-testid="tag-input"
               onChange={ this.handleChange }
             >
-              <option value="alimentacao">Alimentação</option>
-              <option value="lazer">Lazer</option>
-              <option value="trabalho">Trabalho</option>
-              <option value="transporte">Transporte</option>
-              <option value="saude">Saúde</option>
+              <option value="Alimentação" defaultValue>Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
             <button type="button" onClick={ this.addExpenses }>Adicionar despesa</button>
           </form>
@@ -124,7 +144,6 @@ Wallet.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   expensesAction: (payload) => dispatch(sendExpenses(payload)),
-  getDataApi: () => dispatch(fetchApi()),
 });
 
 const mapStateToProps = (state) => ({
