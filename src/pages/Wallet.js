@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { sendExpenses } from '../actions';
+import Table from '../components/Table';
 
 class Wallet extends React.Component {
   constructor() {
@@ -10,10 +11,9 @@ class Wallet extends React.Component {
     this.state = {
       value: 0,
       description: '',
-      currency: '',
+      currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      totalValue: 0,
       moedas: [],
     };
   }
@@ -40,11 +40,10 @@ class Wallet extends React.Component {
 
   totalExpenses = () => {
     const { expenses } = this.props;
-    const total = expenses.reduce((acc, element) => {
+    return expenses.reduce((acc, element) => {
       const { currency, exchangeRates, value } = element;
       return acc + (exchangeRates[currency].ask * value);
     }, 0);
-    this.setState({ totalValue: total });
   }
 
   addExpenses = () => {
@@ -71,8 +70,9 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { email } = this.props;
-    const { value, totalValue, moedas } = this.state;
+    const { email, expenses } = this.props;
+    const { value, moedas } = this.state;
+    const totalValue = this.totalExpenses();
     return (
       <div>
         TrybeWallet
@@ -135,19 +135,7 @@ class Wallet extends React.Component {
           </form>
         </header>
         <main>
-          <table>
-            <tr>
-              <th>Descrição</th>
-              <th>Tag</th>
-              <th>Método de pagamento</th>
-              <th>Valor</th>
-              <th>Moeda</th>
-              <th>Câmbio utilizado</th>
-              <th>Valor convertido</th>
-              <th>Moeda de conversão</th>
-              <th>Editar/Excluir</th>
-            </tr>
-          </table>
+          <Table expenses={ expenses } />
         </main>
       </div>
     );
