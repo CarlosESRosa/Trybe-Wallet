@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { sendExpenses } from '../actions';
 import Table from '../components/Table';
+import fetchAPI from '../helpers/fetchApi';
 
 class Wallet extends React.Component {
   constructor() {
@@ -19,14 +20,15 @@ class Wallet extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((dataApi) => {
-        this.setState({
-          moedas: Object.keys(dataApi).filter((element) => element !== 'USDT'),
-        });
-      })
-      .catch((error) => error);
+    this.getApiValue();
+  }
+
+  getApiValue = async () => {
+    const apiValue = await fetchAPI();
+    this.setState({
+      moedas: Object.keys(apiValue).filter((element) => element !== 'USDT'),
+    });
+    return apiValue;
   }
 
   handleChange = ({ target }) => {
@@ -46,27 +48,23 @@ class Wallet extends React.Component {
     }, 0);
   }
 
-  addExpenses = () => {
+  addExpenses = async () => {
     const { value, description, currency, method,
       tag } = this.state;
     const { expensesAction, expenses } = this.props;
-    fetch('https://economia.awesomeapi.com.br/json/all')
-      .then((response) => response.json())
-      .then((dataApi) => {
-        const expensesObj = {
-          id: expenses.length,
-          value,
-          description,
-          currency,
-          method,
-          tag,
-          exchangeRates: dataApi,
-        };
-        expensesAction(expensesObj);
-        this.setState({ value: 0 });
-        this.totalExpenses();
-      })
-      .catch((error) => error);
+    const apiValue = await this.getApiValue();
+    const expensesObj = {
+      id: expenses.length,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: apiValue,
+    };
+    expensesAction(expensesObj);
+    this.setState({ value: 0 });
+    this.totalExpenses();
   }
 
   render() {
