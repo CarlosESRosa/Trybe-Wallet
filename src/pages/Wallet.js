@@ -68,7 +68,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { email, expenses } = this.props;
+    const { email } = this.props;
     const { value, moedas } = this.state;
     const totalValue = this.totalExpenses();
     return (
@@ -133,7 +133,7 @@ class Wallet extends React.Component {
           </form>
         </header>
         <main>
-          <Table expenses={ expenses } />
+          <Table />
         </main>
       </div>
     );
@@ -150,7 +150,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  expenses: state.wallet.expenses,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
