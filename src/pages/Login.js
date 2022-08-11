@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { sendEmail } from '../actions';
+import './Login.css';
 
 const passwordMinLength = 6;
 
@@ -47,31 +48,36 @@ class Login extends React.Component {
   render() {
     const { isRedirect } = this.state;
     return (
-      <div>
-        Login
-        <input
-          type="email"
-          name="inputEmail"
-          placeholder="Email:"
-          data-testid="email-input"
-          onChange={ this.handleChange }
-        />
-        <input
-          type="password"
-          name="inputPassword"
-          placeholder="Senha:"
-          data-testid="password-input"
-          onChange={ this.handleChange }
-        />
-        <button
-          type="button"
-          disabled={ this.validateButton() }
-          onClick={ this.clickButton }
-        >
-          Entrar
-        </button>
-        {isRedirect && <Redirect to="/carteira" /> }
-      </div>
+      <form className="login-form">
+        <div>
+
+          <h1>Login</h1>
+          <input
+            type="email"
+            className="login-input"
+            name="inputEmail"
+            placeholder="Email:"
+            data-testid="email-input"
+            onChange={ this.handleChange }
+          />
+          <input
+            type="password"
+            className="login-input"
+            name="inputPassword"
+            placeholder="Senha:"
+            data-testid="password-input"
+            onChange={ this.handleChange }
+          />
+          <button
+            type="button"
+            disabled={ this.validateButton() }
+            onClick={ this.clickButton }
+          >
+            Entrar
+          </button>
+          {isRedirect && <Redirect to="/carteira" /> }
+        </div>
+      </form>
     );
   }
 }
