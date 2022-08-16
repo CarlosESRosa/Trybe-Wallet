@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { sendExpenses } from '../actions';
 import Table from '../components/Table';
 import fetchAPI from '../helpers/fetchApi';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   constructor() {
@@ -73,65 +74,68 @@ class Wallet extends React.Component {
     const totalValue = this.totalExpenses();
     return (
       <div>
-        TrybeWallet
         <header>
-          <h3 data-testid="email-field">{`Email: ${email}`}</h3>
-          <h3 data-testid="total-field">
-            {`Total despesas: ${parseFloat(totalValue.toFixed(2))}`}
-          </h3>
-          <h3 data-testid="header-currency-field">Cambio: BRL</h3>
-          <form>
-            <input
-              type="text"
-              name="value"
-              data-testid="value-input"
-              value={ value }
-              placeholder="valor da despesa"
-              onChange={ this.handleChange }
-            />
-            <input
-              type="text"
-              name="description"
-              data-testid="description-input"
-              placeholder="descrição da despesa"
-              onChange={ this.handleChange }
-            />
-            <select
-              name="currency"
-              data-testid="currency-input"
-              onChange={ this.handleChange }
-              aria-label="moeda"
-            >
-              {moedas.map((element) => (
-                <option value={ element } key={ element } data-testid={ element }>
-                  {element}
-                  {' '}
-                </option>
-              ))}
-            </select>
-            <select
-              name="method"
-              data-testid="method-input"
-              onChange={ this.handleChange }
-            >
-              <option value="Dinheiro" defaultValue>Dinheiro</option>
-              <option value="Cartão de crédito">Cartão de crédito</option>
-              <option value="Cartão de débito">Cartão de débito</option>
-            </select>
-            <select
-              name="tag"
-              data-testid="tag-input"
-              onChange={ this.handleChange }
-            >
-              <option value="Alimentação" defaultValue>Alimentação</option>
-              <option value="Lazer">Lazer</option>
-              <option value="Trabalho">Trabalho</option>
-              <option value="Transporte">Transporte</option>
-              <option value="Saúde">Saúde</option>
-            </select>
-            <button type="button" onClick={ this.addExpenses }>Adicionar despesa</button>
-          </form>
+          <h1 id="main-title">TrybeWallet</h1>
+          <div>
+            <h4 data-testid="email-field">{`Email: ${email}`}</h4>
+            <h4 data-testid="total-field">
+              {`Despesas totais: ${parseFloat(totalValue.toFixed(2))}`}
+            </h4>
+          </div>
         </header>
+
+        <h3 data-testid="header-currency-field">Cambio: BRL</h3>
+        <form>
+          <input
+            type="text"
+            name="value"
+            data-testid="value-input"
+            value={ value }
+            placeholder="valor da despesa"
+            onChange={ this.handleChange }
+          />
+          <input
+            type="text"
+            name="description"
+            data-testid="description-input"
+            placeholder="descrição da despesa"
+            onChange={ this.handleChange }
+          />
+          <select
+            name="currency"
+            data-testid="currency-input"
+            onChange={ this.handleChange }
+            aria-label="moeda"
+          >
+            {moedas.map((element) => (
+              <option value={ element } key={ element } data-testid={ element }>
+                {element}
+                {' '}
+              </option>
+            ))}
+          </select>
+          <select
+            name="method"
+            data-testid="method-input"
+            onChange={ this.handleChange }
+          >
+            <option value="Dinheiro" defaultValue>Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+          </select>
+          <select
+            name="tag"
+            data-testid="tag-input"
+            onChange={ this.handleChange }
+          >
+            <option value="Alimentação" defaultValue>Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
+          </select>
+          <button type="button" onClick={ this.addExpenses }>Adicionar despesa</button>
+        </form>
         <main>
           <Table />
         </main>

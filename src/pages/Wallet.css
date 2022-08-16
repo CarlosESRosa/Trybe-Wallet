@@ -1,0 +1,30 @@
+:root {
+
+  --primary: #002d7f;
+
+  --lightPrimary: #2d66f1;
+
+  --secondary: #f1b82d;
+
+  --lightDark: #72757d;
+}
+
+#main-title {
+  color: var(--primary);
+}
+
+header {
+  align-items: center;
+  color: var(--lightDark);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+header div {
+  display: flex;
+}
+
+header div h4 {
+  margin: 0 20px;
+}
