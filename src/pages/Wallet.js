@@ -84,15 +84,15 @@ class Wallet extends React.Component {
           </div>
         </header>
 
-        <h3 data-testid="header-currency-field">Cambio: BRL</h3>
-        <form>
+        <h3 data-testid="header-currency-field" id="cambio-brl">Cambio: BRL</h3>
+        <form className="my-form">
           <input
             type="text"
             name="value"
             data-testid="value-input"
-            value={ value }
             placeholder="valor da despesa"
             onChange={ this.handleChange }
+            value={ value }
           />
           <input
             type="text"
@@ -134,7 +134,13 @@ class Wallet extends React.Component {
             <option value="Transporte">Transporte</option>
             <option value="Saúde">Saúde</option>
           </select>
-          <button type="button" onClick={ this.addExpenses }>Adicionar despesa</button>
+          <button
+            type="button"
+            onClick={ this.addExpenses }
+            id="form-button"
+          >
+            Adicionar despesa
+          </button>
         </form>
         <main>
           <Table />

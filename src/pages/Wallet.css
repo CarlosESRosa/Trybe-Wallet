@@ -15,7 +15,7 @@
 
 header {
   align-items: center;
-  color: var(--lightDark);
+  color: black;
   display: flex;
   justify-content: space-between;
   padding: 20px;
@@ -27,4 +27,41 @@ header div {
 
 header div h4 {
   margin: 0 20px;
+}
+
+#cambio-brl {
+  text-align: center;
+}
+
+.my-form {
+  align-items: center;
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+  margin-bottom: 5vh;
+  width: 70%;
+}
+
+#form-button {
+  background-color: var(--lightPrimary);
+  border: 1px solid var(--primary);
+  border-radius: 10%;
+  padding: 10px;
+}
+
+#form-button:hover {
+  background-color: var(--primary);
+  cursor: pointer;
+}
+
+main table {
+  margin: 0 auto;
+  text-align: center;
+  width: 80%;
+}
+
+.del-button {
+  background-color: #ffc6c4;
+  border: none;
+  padding: 5px;
 }

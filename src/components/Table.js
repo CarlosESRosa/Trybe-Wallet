@@ -18,7 +18,7 @@ class Table extends Component {
   render() {
     const { expenses } = this.props;
     return (
-      <div>
+      <div className="table-container">
         <table>
           <thead>
             <tr>
@@ -55,6 +55,7 @@ class Table extends Component {
                   <button
                     type="button"
                     data-testid="delete-btn"
+                    className="del-button"
                     onClick={ (event) => this.delButtonCLick(event, element.id) }
                   >
                     Excluir

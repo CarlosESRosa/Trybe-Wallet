@@ -12,5 +12,5 @@ function App() {
     </Switch>
   );
 }
-// test
+
 export default App;
